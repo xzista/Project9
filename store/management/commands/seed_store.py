@@ -1,7 +1,10 @@
-from django.core.management.base import BaseCommand
-from store.models import NetworkNode, Product
-from decimal import Decimal
 from datetime import date
+from decimal import Decimal
+
+from django.core.management.base import BaseCommand
+
+from store.models import NetworkNode, Product
+
 
 class Command(BaseCommand):
     help = "Заполняет базу тестовыми данными для сети электроники"
@@ -19,7 +22,7 @@ class Command(BaseCommand):
             city="Москва",
             street="Промышленная",
             house_number="1",
-            debt=Decimal("0.00")
+            debt=Decimal("0.00"),
         )
 
         self.stdout.write("Создание завода в США...")
@@ -30,7 +33,7 @@ class Command(BaseCommand):
             city="New-York",
             street="st. prom-5",
             house_number="1",
-            debt=Decimal("0.00")
+            debt=Decimal("0.00"),
         )
 
         self.stdout.write("Создание розничной сети...")
@@ -42,7 +45,7 @@ class Command(BaseCommand):
             street="Невский проспект",
             house_number="10",
             supplier=factory,
-            debt=Decimal("150000.50")
+            debt=Decimal("150000.50"),
         )
 
         self.stdout.write("Создание ИП...")
@@ -54,35 +57,17 @@ class Command(BaseCommand):
             street="Баумана",
             house_number="5",
             supplier=retail,
-            debt=Decimal("25000.00")
+            debt=Decimal("25000.00"),
         )
 
         self.stdout.write("Создание продуктов...")
-        Product.objects.bulk_create([
-            Product(
-                node=factory,
-                name="Смартфон",
-                model="XPhone 12",
-                release_date=date(2023, 9, 1)
-            ),
-            Product(
-                node=factory_usa,
-                name="Iphone",
-                model="Iphone 16 Pro",
-                release_date=date(2024, 9, 1)
-            ),
-            Product(
-                node=retail,
-                name="Ноутбук",
-                model="UltraBook Pro",
-                release_date=date(2023, 6, 15)
-            ),
-            Product(
-                node=entrepreneur,
-                name="Планшет",
-                model="Tab Mini",
-                release_date=date(2024, 1, 10)
-            ),
-        ])
+        Product.objects.bulk_create(
+            [
+                Product(node=factory, name="Смартфон", model="XPhone 12", release_date=date(2023, 9, 1)),
+                Product(node=factory_usa, name="Iphone", model="Iphone 16 Pro", release_date=date(2024, 9, 1)),
+                Product(node=retail, name="Ноутбук", model="UltraBook Pro", release_date=date(2023, 6, 15)),
+                Product(node=entrepreneur, name="Планшет", model="Tab Mini", release_date=date(2024, 1, 10)),
+            ]
+        )
 
         self.stdout.write(self.style.SUCCESS("База успешно заполнена тестовыми данными!"))

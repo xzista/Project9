@@ -1,6 +1,7 @@
-from django.db import models
-from django.core.validators import MinValueValidator
 from decimal import Decimal
+
+from django.core.validators import MinValueValidator
+from django.db import models
 
 
 class NetworkNode(models.Model):
@@ -8,6 +9,7 @@ class NetworkNode(models.Model):
     Модель звена сети: завод / розничная сеть / индивидуальный предприниматель.
     Уровень (level) вычисляется при сохранении как расстояние до ближайшего 'завода' (поставщика=None).
     """
+
     name = models.CharField(max_length=255)
 
     # контакты
@@ -23,21 +25,17 @@ class NetworkNode(models.Model):
         null=True,
         blank=True,
         related_name="clients",
-        help_text="Поставщик оборудования (предыдущее звено по цепочке)"
+        help_text="Поставщик оборудования (предыдущее звено по цепочке)",
     )
 
     # задолженность перед поставщиком
     debt = models.DecimalField(
-        max_digits=14, decimal_places=2,
-        validators=[MinValueValidator(Decimal('0.00'))],
-        default=Decimal('0.00')
+        max_digits=14, decimal_places=2, validators=[MinValueValidator(Decimal("0.00"))], default=Decimal("0.00")
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
     level = models.PositiveSmallIntegerField(
-        default=0,
-        help_text="Уровень в иерархии (0 — завод, 1 — розничная сеть, 2 — ИП)",
-        db_index=True
+        default=0, help_text="Уровень в иерархии (0 — завод, 1 — розничная сеть, 2 — ИП)", db_index=True
     )
 
     class Meta:
@@ -80,6 +78,7 @@ class Product(models.Model):
     """
     Продукт, привязанный к конкретному звену сети.
     """
+
     node = models.ForeignKey(NetworkNode, on_delete=models.CASCADE, related_name="products")
     name = models.CharField(max_length=255)
     model = models.CharField(max_length=255)

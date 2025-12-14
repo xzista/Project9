@@ -1,8 +1,9 @@
-from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
+
 from .models import NetworkNode, Product
-from .serializers import NetworkNodeSerializer, ProductSerializer
 from .permissions import IsActiveEmployee
+from .serializers import NetworkNodeSerializer, ProductSerializer
 
 
 class NetworkNodeViewSet(viewsets.ModelViewSet):
@@ -10,6 +11,7 @@ class NetworkNodeViewSet(viewsets.ModelViewSet):
     CRUD для модели поставщика (NetworkNode).
     Запрет на обновление поля debt реализован в сериализаторе.
     """
+
     queryset = NetworkNode.objects.select_related("supplier").prefetch_related("products")
     serializer_class = NetworkNodeSerializer
     permission_classes = [IsActiveEmployee]

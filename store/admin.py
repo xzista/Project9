@@ -1,12 +1,14 @@
+from decimal import Decimal
+
 from django.contrib import admin
 from django.utils.html import format_html
+
 from .models import NetworkNode, Product
-from decimal import Decimal
 
 
 @admin.action(description="Очистить задолженность перед поставщиком")
 def clear_debt_action(modeladmin, request, queryset):
-    queryset.update(debt=Decimal('0.00'))
+    queryset.update(debt=Decimal("0.00"))
 
 
 @admin.register(NetworkNode)
